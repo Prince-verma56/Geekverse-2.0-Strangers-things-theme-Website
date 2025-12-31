@@ -65,13 +65,13 @@ const PrizesSection = () => {
 
   return (
     <section ref={sectionRef} className="relative min-h-screen py-32 px-4 overflow-hidden"
-    id="prizes">
+      id="prizes">
       <div className="absolute inset-0 bg-gradient-to-b from-background via-void-deep to-background" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section header */}
         <div className="text-center mb-20">
-          <h2 className="font-stranger text-5xl sm:text-6xl md:text-8xl text-foreground mb-4 gsap-fade-up">
+          <h2 className="font-['Kraken']  text-5xl sm:text-6xl md:text-8xl text-foreground mb-4 gsap-fade-up">
             THE <span className="text-crimson text-glow-red">REWARDS</span> AWAIT
           </h2>
           <p className="font-horror text-xl text-muted-foreground gsap-fade-up">
@@ -85,12 +85,12 @@ const PrizesSection = () => {
             <div
               key={index}
               className="group relative p-8 bg-card/30 backdrop-blur-sm border border-border/30 text-center float hoverable"
-              style={{ 
+              style={{
                 animationDelay: `${index * 0.5}s`,
               }}
             >
               {/* Glow effect */}
-              <div 
+              <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                 style={{
                   boxShadow: `inset 0 0 60px ${prize.color}20, 0 0 40px ${prize.color}30`,
@@ -99,19 +99,19 @@ const PrizesSection = () => {
 
               {/* Icon */}
               <div className="mb-6 relative inline-block">
-                <prize.icon 
-                  size={64} 
+                <prize.icon
+                  size={64}
                   style={{ color: prize.color }}
                   className="relative z-10"
                 />
-                <div 
+                <div
                   className="absolute inset-0 blur-xl opacity-50"
                   style={{ background: prize.color }}
                 />
               </div>
 
               {/* Place */}
-              <h3 
+              <h3
                 className="font-stranger text-2xl mb-2 tracking-widest"
                 style={{ color: prize.color }}
               >
@@ -119,9 +119,9 @@ const PrizesSection = () => {
               </h3>
 
               {/* Amount */}
-              <div 
+              <div
                 className="font-stranger text-5xl sm:text-6xl mb-6"
-                style={{ 
+                style={{
                   color: prize.color,
                   textShadow: `0 0 30px ${prize.color}60`,
                 }}

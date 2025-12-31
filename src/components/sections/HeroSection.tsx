@@ -21,100 +21,30 @@ const HeroSection = () => {
 
   // Track mouse for glow circle
   useEffect(() => {
+    let animationFrameId: number;
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
+      animationFrameId = requestAnimationFrame(() => {
+        setMousePos({ x: e.clientX, y: e.clientY });
+      });
     };
     window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      cancelAnimationFrame(animationFrameId);
+    };
   }, []);
 
-  // Cinematic entrance animations
-  // Cinematic entrance animations
-useEffect(() => {
-  const ctx = gsap.context(() => {
-    if (!titleRef.current || !subtitleRef.current || !ctaRef.current) return;
-
-    const tl = gsap.timeline({ delay: 0.4 }); // smooth delay
-
-    const letters = titleRef.current.querySelectorAll(".letter");
-    tl.fromTo(
-      letters,
-      { opacity: 0, y: 100, rotateX: -90, filter: "blur(20px)" },
-      {
-        opacity: 1,
-        y: 0,
-        rotateX: 0,
-        filter: "blur(0px)",
-        duration: 1.1,
-        stagger: 0.07,
-        ease: "back.out(1.7)"
-      }
-    );
-
-    tl.fromTo(
-      subtitleRef.current,
-      { opacity: 0, y: 30, filter: "blur(10px)", scale: 0.92 },
-      {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        scale: 1,
-        duration: 1.1,
-        ease: "power3.out",
-        delay: 0.2
-      },
-      "-=0.4"
-    );
-
-    if (taglineRef.current) {
-      tl.fromTo(
-        taglineRef.current,
-        { opacity: 0, y: 20, filter: "blur(5px)" },
-        {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 0.9,
-          ease: "power2.out",
-          delay: 0.1
-        },
-        "-=0.5"
-      );
-    }
-
-    tl.fromTo(
-      ctaRef.current,
-      { opacity: 0, scale: 0.85, y: 35 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 1.1,
-        ease: "elastic.out(1, 0.6)"
-      },
-      "-=0.3"
-    );
-  }, containerRef);   // bind GSAP safely only to this section
-
-  return () => ctx.revert();   // clean animations on unmount
-}, []);
-
-
-  // Video GSAP morph effect
+  // 1. SCROLL-LINKED VIDEO MASK ANIMATION
   useGSAP(() => {
-    if (!videoRef.current) return;
+    if (!videoRef.current || !containerRef.current) return;
 
-    gsap.fromTo(
-      videoRef.current,
-      { opacity: 0, scale: 1.15 },
-      { opacity: 1, scale: 1, duration: 1.4, ease: "power3.out" }
-    );
-
+    // End State (Masked)
     gsap.set(videoRef.current, {
       clipPath: "polygon(14% 0, 72% 0, 88% 90%, 0% 95%)",
-      borderRadius: "0% 0% 40% 10%"
+      borderRadius: "0% 0% 40% 10%",
     });
 
+    // Start State (Full Screen) -> Animate to Mask
     gsap.from(videoRef.current, {
       clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
       borderRadius: "0% 0% 0% 0%",
@@ -122,11 +52,69 @@ useEffect(() => {
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
-        end: "bottom top",
-        scrub: true
-      }
+        end: "bottom 20%",
+        scrub: 1,
+      },
     });
-  });
+
+    // Entrance Fade
+    gsap.fromTo(
+      videoRef.current,
+      { opacity: 0, scale: 1.15 },
+      { opacity: 1, scale: 1, duration: 1.4, ease: "power3.out" }
+    );
+  }, { scope: containerRef });
+
+  // 2. Text Animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (!titleRef.current || !subtitleRef.current || !ctaRef.current) return;
+
+      const tl = gsap.timeline({ delay: 0.4 });
+
+      const letters = titleRef.current.querySelectorAll(".letter");
+      if (letters.length > 0) {
+        tl.fromTo(
+          letters,
+          { opacity: 0, y: 100, rotateX: -90, filter: "blur(20px)" },
+          {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            filter: "blur(0px)",
+            duration: 1.1,
+            stagger: 0.07,
+            ease: "back.out(1.7)",
+          }
+        );
+      }
+
+      tl.fromTo(
+        subtitleRef.current,
+        { opacity: 0, y: 30, filter: "blur(10px)", scale: 0.92 },
+        { opacity: 1, y: 0, filter: "blur(0px)", scale: 1, duration: 1.1, ease: "power3.out" },
+        "-=0.6"
+      );
+
+      if (taglineRef.current) {
+        tl.fromTo(
+          taglineRef.current,
+          { opacity: 0, y: 20, filter: "blur(5px)" },
+          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9, ease: "power2.out" },
+          "-=0.7"
+        );
+      }
+
+      tl.fromTo(
+        ctaRef.current,
+        { opacity: 0, scale: 0.85, y: 35 },
+        { opacity: 1, scale: 1, y: 0, duration: 1.1, ease: "elastic.out(1, 0.6)" },
+        "-=0.5"
+      );
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const titleText = "GEEKVERSE 2.0";
   const subtitleText = "NATIONAL LEVEL HACKATHON";
@@ -135,54 +123,73 @@ useEffect(() => {
     <section
       ref={containerRef}
       id="home"
-      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden"
+      // Changed bg-black to bg-zinc-900 for a slightly lighter fallback
+      className="relative min-h-screen w-full flex flex-col items-center justify-center overflow-hidden bg-zinc-900"
     >
-      {/* Video BG */}
-      <video
-        ref={videoRef}
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ filter: "brightness(2.8) contrast(1.15)" }}
-      >
-        <source src={bgclip} type="video/mp4" />
-      </video>
+      {/* 1. BRIGHTER VIDEO BACKGROUND */}
+      <div className="absolute inset-0 z-0">
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover will-change-transform"
+          style={{
+            // INCREASED BRIGHTNESS: Was 0.6 -> Now 0.9 (Much brighter)
+            filter: "brightness(0.9) contrast(1.1)",
+            willChange: "clip-path, border-radius, transform"
+          }}
+        >
+          <source src={bgclip} type="video/mp4" />
+        </video>
 
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-void-deep/90 via-background/60 to-background/90" />
+        {/* LIGHTER GRADIENT: Reduced opacity from 80% to 40% */}
+        {/* <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" /> */}
+
+        {/* LIGHTER RED TINT: Reduced opacity */}
+        <div className="absolute inset-0  pointer-events-none" />
+      </div>
 
       {/* Mouse Glow */}
       <div
-        className="absolute w-[450px] h-[450px] rounded-full pointer-events-none transition-opacity duration-300 hidden md:block"
+        className="absolute w-[500px] h-[500px] rounded-full pointer-events-none hidden md:block z-10"
         style={{
-          left: mousePos.x - 225,
-          top: mousePos.y - 225,
-          background: "radial-gradient(circle, hsl(0 100% 50% / 0.15) 0%, transparent 70%)",
-          filter: "blur(40px)",
-          opacity: 1
+          left: mousePos.x - 250,
+          top: mousePos.y - 250,
+          // Brighter glow effect
+          background: "radial-gradient(circle, rgba(220, 38, 38, 0.2) 0%, transparent 70%)",
+          filter: "blur(60px)",
+          willChange: "left, top",
         }}
       />
 
-      {/* Content */}
-      <div className="relative z-10 text-center px-4 max-w-3xl mx-auto">
-        <div className="w-full flex justify-center items-center px-2">
+      {/* Main Content */}
+      <div className="relative z-20 text-center px-4 max-w-5xl mx-auto w-full">
+
+        {/* Title */}
+        <div className="w-full flex justify-center items-center px-2 mb-2">
           <InteractiveTiltText3D>
             <h1
               ref={titleRef}
-              className="font-stranger-outline text-red-200 whitespace-nowrap leading-none tracking-tight text-center"
+              className="font-stranger-outline scale-y-150 origin-bottom text-transparent [-webkit-text-stroke:2px_red] text-red-500 whitespace-nowrap leading-none tracking-tight text-center drop-shadow-2xl"
               style={{
                 perspective: "1000px",
-                fontSize: "clamp(2.5rem, 8vw, 10rem)",
+                fontSize: "clamp(3rem, 10vw, 11rem)",
+                // Kept strong shadow stack so text is readable against brighter video
+                textShadow: `
+                  3px 3px 0px rgba(0,0,0, 0.8),
+                  0 0 20px rgba(220, 38, 38, 0.5),
+                  0 0 40px rgba(220, 38, 38, 0.3)
+                `,
               }}
             >
               <span className="relative inline-block">
                 {titleText.split("").map((letter, index) => (
                   <span
                     key={index}
-                    className="letter inline-block hover:scale-110 transition-transform duration-300"
+                    className="letter inline-block hover:scale-110 transition-transform duration-300 will-change-transform"
                     style={{
                       animation: `flicker ${2 + Math.random() * 3}s infinite`,
                       animationDelay: `${index * 0.1}s`,
@@ -196,77 +203,87 @@ useEffect(() => {
           </InteractiveTiltText3D>
         </div>
 
+        {/* Subtitle */}
         <h2
           ref={subtitleRef}
-          className="font-stranger text-md sm:text-xl md:text-2xl lg:text-3xl text-crimson tracking-[0.3em] mt-2"
+          className="font-stranger text-lg sm:text-2xl md:text-3xl lg:text-4xl text-crimson tracking-[0.3em] mt-4 will-change-transform"
+          style={{ textShadow: "0 0 10px rgba(0,0,0,0.5)" }}
         >
           {subtitleText}
         </h2>
 
+        {/* Tagline - Made lighter for visibility */}
         <p
           ref={taglineRef}
-          className="font-benguiat text-sm sm:text-lg md:text-xl text-zinc-400 mt-6"
+          className="font-horror text-base sm:text-xl md:text-2xl text-zinc-200 mt-8 leading-relaxed will-change-transform"
         >
           30 hours of coding in the darkest dimension. <br />
-          <span className="text-crimson/80">Will you survive?</span>
+          <span className="text-red-500 font-semibold drop-shadow-md">
+            Will you survive?
+          </span>
         </p>
 
+        {/* CTA Button */}
         <div
           ref={ctaRef}
-          className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full px-4"
+          className="flex flex-col sm:flex-row gap-4 items-center justify-center w-full px-4 mt-12"
         >
-         <Button
-  size="lg"
-  className="
-    mt-10
-    group relative
-    w-full md:w-auto          /* full width on small screens, auto on md+ */
-    px-4 py-3                 /* base padding, scales down on very small screens if needed */
-    text-sm sm:text-base md:text-lg /* responsive text sizing: smaller on phones, larger on desktops */
-    font-stranger tracking-widest
-    bg-crimson text-white border-2 border-crimson/50
-    hover:scale-105 hover:border-crimson
-    transition-all
-    disabled:opacity-50 disabled:cursor-not-allowed
-  "
->
-  <span className="relative z-10 flex items-center justify-center gap-2">
-    <Sparkles className="w-5 h-5 animate-pulse" />
-    ENTER THE UPSIDE DOWN
-    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-  </span>
-</Button>
+          <Button
+            size="lg"
+            className="
+              group relative
+              w-full md:w-auto
+              px-8 py-6
+              text-lg md:text-xl
+              font-stranger tracking-widest
+              bg-crimson text-white 
+              border-2 border-crimson/50
+              hover:scale-105 hover:border-crimson hover:bg-red-700
+              transition-all duration-300
+              shadow-[0_0_20px_rgba(220,38,38,0.4)]
+              hover:shadow-[0_0_40px_rgba(220,38,38,0.6)]
+              will-change-transform
+            "
+          >
+            <span className="relative z-10 flex items-center justify-center gap-3 font-['Kraken'] " >
+              <Sparkles className="w-6 h-6 animate-pulse " />
+              ENTER THE UPSIDE DOWN
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </Button>
         </div>
 
-        {/* Floating blobs */}
-        <div className="absolute top-1/4 left-6 w-48 h-48 bg-crimson/10 rounded-full blur-3xl animate-float mix-blend-overlay" />
-        <div className="absolute bottom-1/4 right-6 w-72 h-72 bg-crimson/10 rounded-full blur-3xl animate-float mix-blend-overlay" />
-
-        {/* Particles */}
+        {/* Floating Particles */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          {[...Array(15)].map((_, i) => (
+          {[...Array(12)].map((_, i) => (
             <div
               key={i}
-              className="absolute w-1 h-1 bg-crimson/50 rounded-full animate-particle"
+              className="absolute w-1.5 h-1.5 bg-red-500/60 rounded-full"
               style={{
                 left: `${Math.random() * 100}%`,
                 top: `${Math.random() * 100}%`,
+                animation: `float-particle ${4 + Math.random() * 5}s linear infinite`,
                 animationDelay: `${Math.random() * 5}s`,
-                animationDuration: `${3 + Math.random() * 4}s`
+                willChange: "transform, opacity",
               }}
             />
           ))}
         </div>
-
-        {/* Animations */}
-        <style>{`
-        @keyframes flicker { 0%,100%{opacity:1}50%{opacity:.95}}
-        @keyframes float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
-        @keyframes particle {0%{opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100vh);opacity:0}}
-        .animate-float{animation:float 3s ease-in-out infinite}
-        .animate-particle{animation:particle linear infinite}
-      `}</style>
       </div>
+
+      <style>{`
+        @keyframes flicker {
+          0%, 100% { opacity: 1; text-shadow: 3px 3px 0px rgba(0,0,0,0.8), 0 0 20px rgba(220,38,38,0.5), 0 0 40px rgba(220,38,38,0.3); }
+          50% { opacity: 0.9; text-shadow: 3px 3px 0px rgba(0,0,0,0.8), 0 0 10px rgba(220,38,38,0.3), 0 0 20px rgba(220,38,38,0.1); }
+          51% { opacity: 0.7; }
+          52% { opacity: 1; }
+        }
+        @keyframes float-particle {
+          0% { transform: translateY(0) scale(0); opacity: 0; }
+          20% { opacity: 1; scale: 1; }
+          100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+        }
+      `}</style>
     </section>
   );
 };

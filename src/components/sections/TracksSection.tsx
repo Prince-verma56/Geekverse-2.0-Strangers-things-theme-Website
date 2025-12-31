@@ -16,10 +16,10 @@ const SLOW_EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const FADE_UP_VARIANTS: Variants = {
   hidden: { opacity: 0, y: 40 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { duration: 1.2, ease: SLOW_EASE } 
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1.2, ease: SLOW_EASE }
   }
 };
 
@@ -101,17 +101,17 @@ const ParallaxTiltContainer: React.FC<ParallaxTiltContainerProps> = ({ children 
   useEffect(() => {
     if (!isHovering && sectionRef.current && contentRef.current) {
       gsap.to(sectionRef.current, {
-        x: 0, 
-        y: 0, 
-        rotationY: 0, 
-        rotationX: 0, 
-        duration: 1.5, 
+        x: 0,
+        y: 0,
+        rotationY: 0,
+        rotationX: 0,
+        duration: 1.5,
         ease: "power3.out",
       });
       gsap.to(contentRef.current, {
-        x: 0, 
-        y: 0, 
-        duration: 1.5, 
+        x: 0,
+        y: 0,
+        duration: 1.5,
         ease: "power3.out",
       });
     }
@@ -132,7 +132,7 @@ const ParallaxTiltContainer: React.FC<ParallaxTiltContainerProps> = ({ children 
       >
         {children}
       </div>
-      
+
       <div className="absolute inset-0 pointer-events-none z-30 border border-white/5 rounded-xl" />
     </div>
   );
@@ -169,20 +169,20 @@ const TracksSection = () => {
 
   return (
     <section id="tracks" className="relative min-h-screen py-32 px-4 overflow-hidden">
-      
+
       {/* Global Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-secondary to-background" />
-      
+
       {/* Background Image with optimized loading */}
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 1.1 }}
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 2, ease: SLOW_EASE }}
         viewport={{ once: true, amount: 0.3 }}
         className="absolute inset-0 z-0"
       >
-        <img 
-          src="/images/Bg/AboutBg2.png" 
+        <img
+          src="/images/Bg/AboutBg2.png"
           alt="Background"
           loading="lazy"
           decoding="async"
@@ -196,27 +196,27 @@ const TracksSection = () => {
       </motion.div>
 
       <div className="absolute inset-0 bg-black/40 pointer-events-none z-0" />
-      
+
       {/* Content Wrapper */}
       <div className="relative z-10 max-w-7xl mx-auto">
-        
+
         {/* Header - Staggered Entrance */}
-        <motion.div 
+        <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
           variants={STAGGER_CONTAINER}
           className="text-center mb-20"
         >
-          <motion.h2 
-            variants={FADE_UP_VARIANTS} 
-            className="font-stranger text-5xl sm:text-6xl md:text-8xl text-foreground mb-4"
+          <motion.h2
+            variants={FADE_UP_VARIANTS}
+            className="font-['Kraken'] text-5xl sm:text-6xl md:text-8xl text-foreground mb-4"
           >
             CHOOSE YOUR{" "}
-            <span 
-              className="text-crimson" 
-              style={{ 
-                textShadow: "0 0 10px hsl(0 100% 50% / 1), 0 0 20px hsl(0 100% 50% / 0.8), 0 0 40px hsl(0 100% 50% / 0.6)" 
+            <span
+              className="text-crimson font-Kraken"
+              style={{
+                textShadow: "0 0 10px hsl(0 100% 50% / 1), 0 0 20px hsl(0 100% 50% / 0.8), 0 0 40px hsl(0 100% 50% / 0.6)"
               }}
             >
               PATH
@@ -242,10 +242,10 @@ const TracksSection = () => {
               {/* Background Media Layer */}
               <div className="absolute inset-0 z-0">
                 {/* Video Background */}
-                <video 
-                  autoPlay 
-                  loop 
-                  muted 
+                <video
+                  autoPlay
+                  loop
+                  muted
                   playsInline
                   preload="auto"
                   className="w-full h-full object-cover scale-105"
@@ -256,7 +256,7 @@ const TracksSection = () => {
                 >
                   <source src="/videos/3D model BgVideo.mp4" type="video/mp4" />
                 </video>
-                
+
                 {/* Fallback: Uncomment for image instead
                 <img 
                   src="/images/Bg/3D model BgImage.png" 
@@ -270,13 +270,13 @@ const TracksSection = () => {
 
               {/* Gradient Overlay */}
               <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black/60 via-transparent to-transparent z-10" />
-              
+
               {/* 3D Model Canvas */}
               <div className="absolute inset-0 z-20">
-                <Canvas 
+                <Canvas
                   camera={{ position: [0, 1.5, 4], fov: 25 }}
-                  gl={{ 
-                    antialias: true, 
+                  gl={{
+                    antialias: true,
                     alpha: true,
                     powerPreference: "high-performance"
                   }}
@@ -284,21 +284,21 @@ const TracksSection = () => {
                   <ambientLight intensity={1} />
                   <directionalLight position={[4, 4, 4]} intensity={1} />
                   <directionalLight position={[-4, 2, -4]} intensity={0.5} />
-                  <OrbitControls 
-                    enableZoom={false} 
-                    autoRotate 
-                    autoRotateSpeed={2.5} 
+                  <OrbitControls
+                    enableZoom={false}
+                    autoRotate
+                    autoRotateSpeed={2.5}
                     enablePan={false}
                     minPolarAngle={Math.PI / 2}
                     maxPolarAngle={Math.PI / 2}
                   />
-                  
+
                   <Suspense fallback={null}>
                     <HeroCharModel />
                   </Suspense>
                 </Canvas>
               </div>
-              
+
               {/* Decorative Borders */}
               <div className="absolute top-4 left-4 w-12 h-12 border-t-2 border-l-2 border-crimson/50 z-30 opacity-70" />
               <div className="absolute bottom-4 right-4 w-12 h-12 border-b-2 border-r-2 border-crimson/50 z-30 opacity-70" />
@@ -306,7 +306,7 @@ const TracksSection = () => {
           </motion.div>
 
           {/* RIGHT: Scrollable Track List */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.5, ease: SLOW_EASE, delay: 0.2 }}
@@ -344,14 +344,14 @@ const TracksSection = () => {
                 >
                   <div className="flex items-center gap-5">
                     <div className="relative shrink-0 p-3 bg-white/5 rounded-lg border border-white/10 group-hover:scale-110 transition-transform duration-500">
-                      <img 
-                        src={track.icon} 
+                      <img
+                        src={track.icon}
                         alt={track.name}
                         width={40}
                         height={40}
                         loading="lazy"
-                        className="w-10 h-10 object-contain" 
-                        style={{ filter: `drop-shadow(0 0 5px ${track.color})` }} 
+                        className="w-10 h-10 object-contain"
+                        style={{ filter: `drop-shadow(0 0 5px ${track.color})` }}
                       />
                     </div>
                     <div className="flex-1">
@@ -364,12 +364,12 @@ const TracksSection = () => {
                     </div>
                   </div>
                   {/* Animated bottom line */}
-                  <div 
-                    className="absolute bottom-0 left-0 h-[1px] w-0 group-hover:w-full transition-all duration-700 ease-out" 
-                    style={{ 
+                  <div
+                    className="absolute bottom-0 left-0 h-[1px] w-0 group-hover:w-full transition-all duration-700 ease-out"
+                    style={{
                       background: track.color,
                       boxShadow: `0 0 8px ${track.color}`
-                    }} 
+                    }}
                   />
                 </motion.div>
               ))}
@@ -378,7 +378,7 @@ const TracksSection = () => {
         </div>
 
         {/* Footer Note */}
-        <motion.p 
+        <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.5, duration: 1.5 }}

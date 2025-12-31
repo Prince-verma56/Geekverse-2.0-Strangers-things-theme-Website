@@ -139,10 +139,10 @@ const AboutSection = () => {
             style={{ willChange: 'transform' }}
           >
             <InteractiveTilt3D>
-              <div className="p-8 bg-card/20 backdrop-blur-md border border-border/30 rounded-xl transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-xl hover:shadow-crimson/10 relative overflow-hidden">
+              <div className="p-8 bg-card/20 backdrop-blur-md border border-red-400 border-border/30 rounded-xl transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-xl hover:shadow-crimson/10 relative overflow-hidden">
                 {/* Shiny effect */}
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                
+
                 <h3 className="font-empire text-2xl text-crimson mb-4 tracking-wider relative z-10">
                   ABOUT THE EVENT
                 </h3>
@@ -162,10 +162,10 @@ const AboutSection = () => {
             style={{ willChange: 'transform' }}
           >
             <InteractiveTilt3D>
-              <div className="p-8 bg-card/20 backdrop-blur-md border border-border/30 rounded-xl transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-xl hover:shadow-crimson/10 relative overflow-hidden">
+              <div className=" border-red-400 p-8 bg-card/20 backdrop-blur-md border border-border/30 rounded-xl transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-xl hover:shadow-crimson/10 relative overflow-hidden">
                 {/* Shiny effect */}
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                
+
                 <h3 className="font-empire text-2xl text-crimson mb-4 tracking-wider relative z-10">
                   WHEN & WHERE
                 </h3>
@@ -200,10 +200,10 @@ const AboutSection = () => {
               style={{ willChange: 'transform' }}
             >
               <InteractiveTilt3D>
-                <div className="p-5 bg-card/20 backdrop-blur-md border border-border/30 rounded-lg transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-lg relative overflow-hidden group">
+                <div className="border-red-400 p-5 bg-card/20 backdrop-blur-md border border-border/30 rounded-lg transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-lg relative overflow-hidden group">
                   {/* Shiny effect */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-                  
+
                   <p className="font-empire text-xl text-crimson mb-1 tracking-wide relative z-10">
                     {item.title}
                   </p>
@@ -228,7 +228,7 @@ const AboutSection = () => {
             "Great things are born when ideas collide with courage. Code it,
             build it, own it."
           </p>
-          <span className="block mt-4 font-dragonforce text-crimson tracking-widest text-sm">
+          <span className="block mt-4 font-dragonforce text-crimson tracking-widest text-lg">
             — GEEKVERSE
           </span>
         </motion.div>

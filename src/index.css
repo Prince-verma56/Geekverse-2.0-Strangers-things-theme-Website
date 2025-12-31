@@ -28,11 +28,12 @@
 
 @font-face {
   font-family: 'Dragonforce';
-  src: url('./assets/fonts/dragonforce/Dragonforce.ttf') format('truetype');
+  src: url('./assets/fonts/DragonForcE.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'Kraken';
   src: url('./assets/fonts/kraken/Kraken.ttf') format('truetype');
@@ -40,6 +41,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'ParryHotter';
   src: url('./assets/fonts/parry-hotter/Parry Hotter.ttf') format('truetype');
@@ -47,6 +49,7 @@
   font-style: normal;
   font-display: swap;
 }
+
 @font-face {
   font-family: 'The_Last_Of_Us';
   src: url('./assets/fonts/the-last-of-us/The Last Of Us.ttf') format('truetype');
@@ -136,7 +139,8 @@
   }
 
   html {
-    scroll-behavior: auto; /* Lenis handles smooth scroll */
+    scroll-behavior: auto;
+    /* Lenis handles smooth scroll */
   }
 
   body {
@@ -163,6 +167,7 @@
 }
 
 @layer components {
+
   /* Film grain overlay */
   .film-grain {
     position: fixed;
@@ -178,7 +183,7 @@
 
   /* Red glow text */
   .text-glow-red {
-    text-shadow: 
+    text-shadow:
       0 0 10px hsl(var(--crimson) / 0.8),
       0 0 20px hsl(var(--crimson) / 0.6),
       0 0 40px hsl(var(--crimson) / 0.4),
@@ -187,7 +192,7 @@
 
   /* Cyan glow text */
   .text-glow-cyan {
-    text-shadow: 
+    text-shadow:
       0 0 10px hsl(var(--electric) / 0.8),
       0 0 20px hsl(var(--electric) / 0.6),
       0 0 40px hsl(var(--electric) / 0.4);
@@ -195,14 +200,14 @@
 
   /* Box glow effects */
   .glow-red {
-    box-shadow: 
+    box-shadow:
       0 0 20px hsl(var(--crimson) / 0.4),
       0 0 40px hsl(var(--crimson) / 0.2),
       inset 0 0 20px hsl(var(--crimson) / 0.1);
   }
 
   .glow-red-intense {
-    box-shadow: 
+    box-shadow:
       0 0 30px hsl(var(--crimson) / 0.6),
       0 0 60px hsl(var(--crimson) / 0.4),
       0 0 100px hsl(var(--crimson) / 0.2);
@@ -214,22 +219,29 @@
   }
 
   @keyframes glitch {
-    0%, 90%, 100% {
+
+    0%,
+    90%,
+    100% {
       transform: translate(0);
       filter: none;
     }
+
     91% {
       transform: translate(-2px, 1px);
       filter: hue-rotate(90deg);
     }
+
     92% {
       transform: translate(2px, -1px);
       filter: hue-rotate(-90deg);
     }
+
     93% {
       transform: translate(-1px, -1px);
       filter: none;
     }
+
     94% {
       transform: translate(1px, 1px);
       filter: hue-rotate(45deg);
@@ -242,12 +254,31 @@
   }
 
   @keyframes flicker {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 1; }
-    52% { opacity: 0.8; }
-    54% { opacity: 1; }
-    56% { opacity: 0.9; }
-    58% { opacity: 1; }
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 1;
+    }
+
+    52% {
+      opacity: 0.8;
+    }
+
+    54% {
+      opacity: 1;
+    }
+
+    56% {
+      opacity: 0.9;
+    }
+
+    58% {
+      opacity: 1;
+    }
   }
 
   /* Pulse glow */
@@ -256,13 +287,16 @@
   }
 
   @keyframes pulseGlow {
-    0%, 100% {
-      box-shadow: 
+
+    0%,
+    100% {
+      box-shadow:
         0 0 20px hsl(var(--crimson) / 0.4),
         0 0 40px hsl(var(--crimson) / 0.2);
     }
+
     50% {
-      box-shadow: 
+      box-shadow:
         0 0 40px hsl(var(--crimson) / 0.6),
         0 0 80px hsl(var(--crimson) / 0.4),
         0 0 120px hsl(var(--crimson) / 0.2);
@@ -281,6 +315,7 @@
       transform: translateY(20px);
       filter: blur(10px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);
@@ -294,8 +329,15 @@
   }
 
   @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
   }
 
   /* Lightning flash */
@@ -304,11 +346,25 @@
   }
 
   @keyframes lightningFlash {
-    0% { opacity: 0; }
-    20% { opacity: 1; }
-    40% { opacity: 0.3; }
-    60% { opacity: 0.8; }
-    100% { opacity: 0; }
+    0% {
+      opacity: 0;
+    }
+
+    20% {
+      opacity: 1;
+    }
+
+    40% {
+      opacity: 0.3;
+    }
+
+    60% {
+      opacity: 0.8;
+    }
+
+    100% {
+      opacity: 0;
+    }
   }
 
   /* Heartbeat background */
@@ -317,11 +373,27 @@
   }
 
   @keyframes heartbeat {
-    0%, 100% { transform: scale(1); }
-    14% { transform: scale(1.02); }
-    28% { transform: scale(1); }
-    42% { transform: scale(1.03); }
-    56% { transform: scale(1); }
+
+    0%,
+    100% {
+      transform: scale(1);
+    }
+
+    14% {
+      transform: scale(1.02);
+    }
+
+    28% {
+      transform: scale(1);
+    }
+
+    42% {
+      transform: scale(1.03);
+    }
+
+    56% {
+      transform: scale(1);
+    }
   }
 
   /* Shake effect */
@@ -330,16 +402,47 @@
   }
 
   @keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10% { transform: translateX(-5px) rotate(-0.5deg); }
-    20% { transform: translateX(5px) rotate(0.5deg); }
-    30% { transform: translateX(-5px) rotate(-0.5deg); }
-    40% { transform: translateX(5px) rotate(0.5deg); }
-    50% { transform: translateX(-3px) rotate(-0.3deg); }
-    60% { transform: translateX(3px) rotate(0.3deg); }
-    70% { transform: translateX(-2px) rotate(-0.2deg); }
-    80% { transform: translateX(2px) rotate(0.2deg); }
-    90% { transform: translateX(-1px) rotate(-0.1deg); }
+
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    10% {
+      transform: translateX(-5px) rotate(-0.5deg);
+    }
+
+    20% {
+      transform: translateX(5px) rotate(0.5deg);
+    }
+
+    30% {
+      transform: translateX(-5px) rotate(-0.5deg);
+    }
+
+    40% {
+      transform: translateX(5px) rotate(0.5deg);
+    }
+
+    50% {
+      transform: translateX(-3px) rotate(-0.3deg);
+    }
+
+    60% {
+      transform: translateX(3px) rotate(0.3deg);
+    }
+
+    70% {
+      transform: translateX(-2px) rotate(-0.2deg);
+    }
+
+    80% {
+      transform: translateX(2px) rotate(0.2deg);
+    }
+
+    90% {
+      transform: translateX(-1px) rotate(-0.1deg);
+    }
   }
 
   /* Magnetic button effect base */
@@ -407,6 +510,7 @@
 }
 
 @layer utilities {
+
   /* Custom scrollbar for elements that need it */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
@@ -427,13 +531,49 @@
 
   /* Fog gradient */
   .fog-overlay {
-    background: linear-gradient(
-      180deg,
-      transparent 0%,
-      hsl(var(--void) / 0.3) 30%,
-      hsl(var(--void) / 0.5) 50%,
-      hsl(var(--void) / 0.3) 70%,
-      transparent 100%
-    );
+    background: linear-gradient(180deg,
+        transparent 0%,
+        hsl(var(--void) / 0.3) 30%,
+        hsl(var(--void) / 0.5) 50%,
+        hsl(var(--void) / 0.3) 70%,
+        transparent 100%);
+  }
+
+  /* GPU Acceleration Utilities - Performance Optimization */
+  .gpu-accelerate {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .will-change-transform-opacity {
+    will-change: transform, opacity;
+  }
+
+  /* Contain paint for better rendering performance */
+  .contain-paint {
+    contain: paint;
+  }
+
+  .contain-layout {
+    contain: layout;
+  }
+
+  .contain-strict {
+    contain: strict;
+  }
+
+  /* Hardware acceleration for animations */
+  .hw-accelerate {
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
   }
 }

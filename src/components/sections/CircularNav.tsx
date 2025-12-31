@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { useLenisContext } from "@/context/LenisContext";
+import clsx from "clsx"; // Make sure to install: npm install clsx
 
 const navItems = [
   { label: "Home", sectionId: "home" },
@@ -18,9 +19,65 @@ const CircularNav: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [hasAnimated, setHasAnimated] = useState(false);
   const [logoLoaded, setLogoLoaded] = useState(false);
+
+  // --- AUDIO STATE ---
+const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+const [isIndicatorActive, setIsIndicatorActive] = useState(false);
+
+  const audioElementRef = useRef<HTMLAudioElement>(null);
+
   const overlayRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   const { lenis } = useLenisContext();
+
+  // --- AUDIO TOGGLE LOGIC ---
+  const toggleAudioIndicator = () => {
+    setIsAudioPlaying((prev) => !prev);
+    setIsIndicatorActive((prev) => !prev);
+  };
+
+ // Auto play audio on load (with browser fallback)
+useEffect(() => {
+  const audio = audioElementRef.current;
+  if (!audio) return;
+
+  // Try autoplay immediately
+  audio.volume = 0.4;
+  audio.play().catch(() => {});
+
+  // Fallback 1: Trigger audio after first scroll
+  const unlockOnScroll = () => {
+    audio.play().catch(() => {});
+    window.removeEventListener("scroll", unlockOnScroll);
+  };
+  window.addEventListener("scroll", unlockOnScroll);
+
+  // Fallback 2: Trigger on first click (mobile)
+  const unlockOnClick = () => {
+    audio.play().catch(() => {});
+    document.removeEventListener("click", unlockOnClick);
+  };
+  document.addEventListener("click", unlockOnClick);
+
+  return () => {
+    window.removeEventListener("scroll", unlockOnScroll);
+    document.removeEventListener("click", unlockOnClick);
+  };
+}, []);
+
+
+
+useEffect(() => {
+  const audio = audioElementRef.current;
+  if (!audio) return;
+
+  if (isAudioPlaying) {
+    audio.play().catch(() => {});
+  } else {
+    audio.pause();
+  }
+}, [isAudioPlaying]);
+
 
   const handleScroll = (id: string) => {
     if (lenis) {
@@ -89,19 +146,52 @@ const CircularNav: React.FC = () => {
 
   return (
     <>
+      {/* --- AUDIO BUTTON (Positioned next to Menu) --- */}
+      <button
+        onClick={toggleAudioIndicator}
+        aria-label="Toggle Audio"
+        className={`fixed top-6 right-24 z-[100] h-14 px-4 rounded-full bg-black/40 border border-white/10 backdrop-blur-md text-white flex items-center justify-center shadow-lg transition-all duration-500 hover:bg-black/60 ${isVisible && hasAnimated
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-24 opacity-0"
+          }`}
+        style={{ transitionDelay: hasAnimated ? "100ms" : "150ms" }}
+      >
+        <audio
+          ref={audioElementRef}
+          className="hidden"
+          src="/music/Stranger thing bg music.mp3" // <--- CHANGE YOUR MUSIC PATH HERE
+          loop
+        />
+        <div className="flex items-center space-x-1">
+          {[1, 2, 3, 4].map((bar) => (
+            <div
+              key={bar}
+              className={clsx("w-1 h-4 bg-white rounded-full transition-all duration-200", {
+                "animate-music-bar bg-crimson": isIndicatorActive,
+                "opacity-50 h-2": !isIndicatorActive
+              })}
+              style={{
+                animationDelay: `${bar * 0.1}s`,
+              }}
+            />
+          ))}
+        </div>
+        <span className="ml-3 font-horror text-sm hidden sm:block">
+          {isAudioPlaying ? "SOUND ON" : "SOUND OFF"}
+        </span>
+      </button>
+
       {/* MENU BUTTON */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle menu"
-        className={`fixed top-6 right-6 z-[100] w-14 h-14 rounded-full bg-crimson text-white flex items-center justify-center shadow-lg transition-all duration-500 ${
-          isVisible && hasAnimated
+        className={`fixed top-6 right-6 z-[100] w-14 h-14 rounded-full bg-crimson text-white flex items-center justify-center shadow-lg transition-all duration-500 ${isVisible && hasAnimated
             ? "translate-y-0 opacity-100"
             : "-translate-y-24 opacity-0"
-        } ${
-          isOpen
+          } ${isOpen
             ? "scale-110 rotate-90 shadow-[0_0_30px_rgba(220,38,38,0.6)]"
             : "hover:scale-110 hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]"
-        }`}
+          }`}
         style={{ transitionDelay: hasAnimated ? "0ms" : "200ms" }}
       >
         {isOpen ? (
@@ -118,11 +208,10 @@ const CircularNav: React.FC = () => {
         tabIndex={0}
         onKeyDown={(e) => e.key === "Enter" && handleScroll("home")}
         aria-label="Go to home"
-        className={`fixed top-6 left-6 z-[100] cursor-pointer group transition-all duration-500 ${
-          isVisible && hasAnimated
+        className={`fixed top-6 left-6 z-[100] cursor-pointer group transition-all duration-500 ${isVisible && hasAnimated
             ? "translate-y-0 opacity-100"
             : "-translate-y-24 opacity-0"
-        }`}
+          }`}
         style={{ transitionDelay: hasAnimated ? "0ms" : "100ms" }}
       >
         {/* Logo container with hover effects */}
@@ -131,7 +220,7 @@ const CircularNav: React.FC = () => {
           <div className="absolute 
           shadow-lg  shadow-red-600
           -inset-2 bg-crimson/20 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          
+
           {/* Logo image with optimizations */}
           <img
             src="/images/GFG redish logo 2.png"
@@ -141,15 +230,14 @@ const CircularNav: React.FC = () => {
             loading="eager"
             decoding="async"
             onLoad={() => setLogoLoaded(true)}
-            className={`relative h-28 -top-5 w-auto object-contain transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(220,38,38,0.6)] ${
-              logoLoaded ? "opacity-100" : "opacity-0"
-            }`}
+            className={`relative h-28 -top-5 w-auto object-contain transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_15px_rgba(220,38,38,0.6)] ${logoLoaded ? "opacity-100" : "opacity-0"
+              }`}
             style={{
               imageRendering: 'crisp-edges',
               willChange: 'transform',
             }}
           />
-          
+
           {/* Loading placeholder */}
           {!logoLoaded && (
             <div className="absolute inset-0 flex items-center justify-center">
@@ -162,11 +250,10 @@ const CircularNav: React.FC = () => {
       {/* OVERLAY MENU */}
       <div
         ref={overlayRef}
-        className={`fixed inset-0 z-[90] transition-all duration-700 ${
-          isOpen
+        className={`fixed inset-0 z-[90] transition-all duration-700 ${isOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
-        }`}
+          }`}
       >
         {/* ANIMATED BACKGROUND */}
         <div
@@ -175,16 +262,14 @@ const CircularNav: React.FC = () => {
         >
           {/* Animated gradient overlay */}
           <div
-            className={`absolute inset-0 bg-gradient-to-br from-red-950/20 via-transparent to-red-950/20 transition-opacity duration-1000 ${
-              isOpen ? "opacity-100" : "opacity-0"
-            }`}
+            className={`absolute inset-0 bg-gradient-to-br from-red-950/20 via-transparent to-red-950/20 transition-opacity duration-1000 ${isOpen ? "opacity-100" : "opacity-0"
+              }`}
           />
 
           {/* Radial glow effect */}
           <div
-            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-red-600/10 blur-[100px] transition-all duration-1000 ${
-              isOpen ? "scale-100 opacity-100" : "scale-50 opacity-0"
-            }`}
+            className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-red-600/10 blur-[100px] transition-all duration-1000 ${isOpen ? "scale-100 opacity-100" : "scale-50 opacity-0"
+              }`}
           />
         </div>
 
@@ -193,9 +278,8 @@ const CircularNav: React.FC = () => {
           <div className="relative w-[500px] h-[500px] max-w-[90vw] max-h-[90vh]">
             {/* CENTER GLOW */}
             <div
-              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ${
-                isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"
-              }`}
+              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ${isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                }`}
             >
               <div className="relative w-24 h-24">
                 {/* Pulsing rings */}
@@ -208,7 +292,7 @@ const CircularNav: React.FC = () => {
                 {/* Logo in center */}
                 <div className="absolute inset-0 rounded-full border border-red-600/50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-2">
                   <img
-                    src="/path/to/your/logo.png"
+                    src="/images/GFG redish logo 2.png" // Updated to match your logo path
                     alt="Geekverse"
                     width={60}
                     height={60}
@@ -230,9 +314,8 @@ const CircularNav: React.FC = () => {
               return (
                 <div
                   key={item.sectionId}
-                  className={`absolute top-1/2 left-1/2 transition-all duration-700 ${
-                    isOpen ? "opacity-100 scale-100" : "opacity-0 scale-50"
-                  }`}
+                  className={`absolute top-1/2 left-1/2 transition-all duration-700 ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-50"
+                    }`}
                   style={{
                     transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
                     transitionDelay: isOpen ? `${i * 70 + 200}ms` : "0ms",
@@ -260,9 +343,8 @@ const CircularNav: React.FC = () => {
 
             {/* ROTATING OUTER RING */}
             <svg
-              className={`absolute inset-0 w-full h-full pointer-events-none transition-all duration-1000 ${
-                isOpen ? "opacity-100 scale-100" : "opacity-0 scale-50"
-              }`}
+              className={`absolute inset-0 w-full h-full pointer-events-none transition-all duration-1000 ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-50"
+                }`}
               viewBox="0 0 500 500"
               style={{ transitionDelay: isOpen ? "100ms" : "0ms" }}
             >
@@ -315,9 +397,8 @@ const CircularNav: React.FC = () => {
               return (
                 <div
                   key={angle}
-                  className={`absolute transition-all duration-700 ${
-                    isOpen ? "opacity-100 scale-100" : "opacity-0 scale-0"
-                  }`}
+                  className={`absolute transition-all duration-700 ${isOpen ? "opacity-100 scale-100" : "opacity-0 scale-0"
+                    }`}
                   style={{
                     left: `${x}px`,
                     top: `${y}px`,
@@ -344,12 +425,22 @@ const CircularNav: React.FC = () => {
           to { transform: rotate(0deg); }
         }
         
+        @keyframes music-bar {
+            0% { height: 4px; }
+            50% { height: 16px; }
+            100% { height: 4px; }
+        }
+
         .animate-spin-slow {
           animation: spin-slow 20s linear infinite;
         }
         
         .animate-spin-reverse {
           animation: spin-reverse 15s linear infinite;
+        }
+
+        .animate-music-bar {
+            animation: music-bar 0.5s ease-in-out infinite;
         }
       `}</style>
     </>

@@ -11,9 +11,15 @@ export const useGsapScroll = () => {
     if (initialized.current) return;
     initialized.current = true;
 
+    // Configure ScrollTrigger for better performance
+    ScrollTrigger.config({
+      limitCallbacks: true, // Limit callback frequency for better performance
+      syncInterval: 150, // Sync less frequently (default is 17ms)
+    });
+
     // Fade in up animations
     gsap.utils.toArray<HTMLElement>('.gsap-fade-up').forEach((el) => {
-      gsap.fromTo(el, 
+      gsap.fromTo(el,
         { opacity: 0, y: 60 },
         {
           opacity: 1,
@@ -21,14 +27,14 @@ export const useGsapScroll = () => {
           duration: 1,
           ease: 'power2.out',
           force3D: true,
-          willChange: 'transform, opacity',
-          overwrite: 'auto',
           scrollTrigger: {
             trigger: el,
             start: 'top 85%',
             end: 'top 50%',
             toggleActions: 'play none none reverse',
             invalidateOnRefresh: true,
+            // Performance optimization
+            fastScrollEnd: true,
           },
         }
       );
@@ -44,13 +50,12 @@ export const useGsapScroll = () => {
           duration: 0.8,
           ease: 'back.out(1.7)',
           force3D: true,
-          willChange: 'transform, opacity',
-          overwrite: 'auto',
           scrollTrigger: {
             trigger: el,
             start: 'top 85%',
             invalidateOnRefresh: true,
             toggleActions: 'play none none reverse',
+            fastScrollEnd: true,
           },
         }
       );
@@ -66,13 +71,12 @@ export const useGsapScroll = () => {
           duration: 0.8,
           ease: 'power2.out',
           force3D: true,
-          willChange: 'transform, opacity',
-          overwrite: 'auto',
           scrollTrigger: {
             trigger: el,
             start: 'top 85%',
             invalidateOnRefresh: true,
             toggleActions: 'play none none reverse',
+            fastScrollEnd: true,
           },
         }
       );
@@ -88,13 +92,12 @@ export const useGsapScroll = () => {
           duration: 0.8,
           ease: 'power2.out',
           force3D: true,
-          willChange: 'transform, opacity',
-          overwrite: 'auto',
           scrollTrigger: {
             trigger: el,
             start: 'top 85%',
             invalidateOnRefresh: true,
             toggleActions: 'play none none reverse',
+            fastScrollEnd: true,
           },
         }
       );
@@ -102,7 +105,7 @@ export const useGsapScroll = () => {
 
     // Stagger children animations
     gsap.utils.toArray<HTMLElement>('.gsap-stagger').forEach((container) => {
-      const children = container.children;
+      const children = Array.from(container.children) as HTMLElement[];
       gsap.fromTo(children,
         { opacity: 0, y: 40 },
         {
@@ -112,39 +115,39 @@ export const useGsapScroll = () => {
           stagger: 0.15,
           ease: 'power2.out',
           force3D: true,
-          willChange: 'transform, opacity',
-          overwrite: 'auto',
           scrollTrigger: {
             trigger: container,
             start: 'top 80%',
             invalidateOnRefresh: true,
             toggleActions: 'play none none reverse',
+            fastScrollEnd: true,
           },
         }
       );
     });
 
-    // Parallax effect
+    // Parallax effect - optimized with scrub
     gsap.utils.toArray<HTMLElement>('.gsap-parallax').forEach((el) => {
       gsap.to(el, {
         yPercent: -30,
         ease: 'none',
         force3D: true,
-        willChange: 'transform',
         scrollTrigger: {
           trigger: el,
           start: 'top bottom',
           end: 'bottom top',
-          scrub: true,
+          scrub: 1, // Smooth scrubbing with 1 second delay
           invalidateOnRefresh: true,
         },
       });
     });
 
     return () => {
+      // Clean up all ScrollTriggers
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 };
 
 export default useGsapScroll;
+
