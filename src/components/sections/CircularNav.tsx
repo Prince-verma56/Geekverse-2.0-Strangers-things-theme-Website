@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Menu, X } from "lucide-react";
 import { useLenisContext } from "@/context/LenisContext";
 import clsx from "clsx"; // Make sure to install: npm install clsx
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 const navItems = [
   { label: "Home", sectionId: "home" },
@@ -181,7 +182,36 @@ useEffect(() => {
         </span>
       </button>
 
+       {/* AUTH BUTTONS */}
+      <div
+        className={`fixed top-6 right-24 z-[100] flex items-center gap-4 transition-all duration-500 ${
+          isVisible && hasAnimated
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-24 opacity-0"
+        }`}
+        style={{ transitionDelay: hasAnimated ? "0ms" : "150ms" }}
+      >
+        <SignedOut>
+          <SignInButton mode="modal">
+            <button className="bg-crimson text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:scale-105 hover:shadow-red-600/40 transition-all duration-300">
+              Sign In
+            </button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton 
+            appearance={{
+              elements: {
+                avatarBox: "w-10 h-10 border-2 border-crimson",
+              }
+            }}
+          />
+        </SignedIn>
+      </div>
+
       {/* MENU BUTTON */}
+     
+
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle menu"
