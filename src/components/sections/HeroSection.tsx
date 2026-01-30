@@ -16,6 +16,7 @@ const HeroSection = () => {
   const ctaRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
@@ -61,7 +62,7 @@ const HeroSection = () => {
     gsap.fromTo(
       videoRef.current,
       { opacity: 0, scale: 1.15 },
-      { opacity: 1, scale: 1, duration: 1.4, ease: "power3.out" }
+      { opacity:0.6, scale: 1, duration: 1.4, ease: "power3.out" }
     );
   }, { scope: containerRef });
 
@@ -116,8 +117,8 @@ const HeroSection = () => {
     return () => ctx.revert();
   }, []);
 
-  const titleText = "GEEKVERSE 2.0";
-  const subtitleText = "NATIONAL LEVEL HACKATHON";
+  const titleText = "Strange Events";
+  const subtitleText = "YOUR GATEWAY TO CAMPUS LIFE";
 
   return (
     <section
@@ -137,13 +138,16 @@ const HeroSection = () => {
           preload="auto"
           className="absolute inset-0 w-full h-full object-cover will-change-transform"
           style={{
-            // INCREASED BRIGHTNESS: Was 0.6 -> Now 0.9 (Much brighter)
-            filter: "brightness(0.9) contrast(1.1)",
+            // REMOVED FILTERS for performance - using overlay div instead
             willChange: "clip-path, border-radius, transform"
           }}
         >
           <source src={bgclip} type="video/mp4" />
         </video>
+
+        {/* Overlay for brightness/contrast effect - GPU efficient */}
+        <div className="absolute inset-0 bg-black/10 pointer-events-none mix-blend-overlay" />
+        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
 
         {/* LIGHTER GRADIENT: Reduced opacity from 80% to 40% */}
         {/* <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" /> */}
@@ -154,14 +158,13 @@ const HeroSection = () => {
 
       {/* Mouse Glow */}
       <div
-        className="absolute w-[500px] h-[500px] rounded-full pointer-events-none hidden md:block z-10"
+        ref={glowRef}
+        className="absolute w-[500px] h-[500px] rounded-full pointer-events-none hidden md:block z-10 top-0 left-0"
         style={{
-          left: mousePos.x - 250,
-          top: mousePos.y - 250,
-          // Brighter glow effect
-          background: "radial-gradient(circle, rgba(220, 38, 38, 0.2) 0%, transparent 70%)",
-          filter: "blur(60px)",
-          willChange: "left, top",
+          // Hardware accelerated transform instead of left/top
+          transform: `translate(-500px, -500px)`, 
+          // background: "radial-gradient(circle, rgba(220, 38, 38, 0.2) 0%, transparent 70%)",
+          willChange: "transform",
         }}
       />
 
@@ -173,7 +176,7 @@ const HeroSection = () => {
           <InteractiveTiltText3D>
             <h1
               ref={titleRef}
-              className="font-stranger-outline scale-y-150 origin-bottom text-transparent [-webkit-text-stroke:2px_red] text-red-500 whitespace-nowrap leading-none tracking-tight text-center drop-shadow-2xl"
+              className="font-stranger-outline scale-y-150 origin-bottom text-transparent [-webkit-text-stroke:4px_red] text-red-500 whitespace-nowrap leading-none tracking-tight text-center drop-shadow-2xl"
               style={{
                 perspective: "1000px",
                 fontSize: "clamp(3rem, 10vw, 11rem)",
@@ -217,7 +220,7 @@ const HeroSection = () => {
           ref={taglineRef}
           className="font-horror text-base sm:text-xl md:text-2xl text-zinc-200 mt-8 leading-relaxed will-change-transform"
         >
-          30 hours of coding in the darkest dimension. <br />
+        Friends Don't lie About Hackathons | Events <br />
           <span className="text-red-500 font-semibold drop-shadow-md">
             Will you survive?
           </span>

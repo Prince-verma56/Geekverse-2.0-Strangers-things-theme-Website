@@ -1,38 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
 const RegisterSection = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
-  const [countdown, setCountdown] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
-  // Countdown timer
-  useEffect(() => {
-    const targetDate = new Date('2025-03-15T00:00:00').getTime();
-
-    const updateCountdown = () => {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-
-      if (distance > 0) {
-        setCountdown({
-          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((distance % (1000 * 60)) / 1000),
-        });
-      }
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   // Magnetic button effect
   useEffect(() => {
@@ -73,7 +45,7 @@ const RegisterSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative min-h-screen flex flex-col items-center justify-center py-32 px-4 overflow-hidden"
+      className="relative min-h-[70vh] flex flex-col items-center justify-center py-32 px-4 overflow-hidden"
       id="register"
     >
       {/* Intense background */}
@@ -101,33 +73,14 @@ const RegisterSection = () => {
       </div>
 
       <div className="relative z-10 text-center max-w-4xl mx-auto">
-        {/* Countdown */}
-        <div className="mb-12 gsap-fade-up">
-          <p className="font-horror text-xl text-muted-foreground mb-6">THE PORTAL OPENS IN</p>
-          <div className="flex justify-center gap-4 sm:gap-8">
-            {Object.entries(countdown).map(([label, value]) => (
-              <div key={label} className="text-center">
-                <div 
-                  className="font-stranger text-4xl sm:text-6xl md:text-7xl text-crimson glitch"
-                  style={{ textShadow: '0 0 30px hsl(0 100% 50% / 0.6)' }}
-                >
-                  {String(value).padStart(2, '0')}
-                </div>
-                <div className="font-horror text-xs sm:text-sm text-muted-foreground uppercase tracking-widest mt-2">
-                  {label}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
+        
         {/* Main heading */}
-        <h2 className="font-stranger text-5xl sm:text-7xl md:text-9xl text-foreground mb-6 gsap-fade-up text-glow-red">
-          FINAL PORTAL
+        <h2 className="font-stranger text-5xl sm:text-7xl md:text-8xl text-foreground mb-6 gsap-fade-up text-glow-red">
+          JOIN THE REVOLUTION
         </h2>
 
         <p className="font-horror text-xl sm:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto gsap-fade-up">
-          This is your last chance. Once you enter, there's no going back.
+          Be the first to know about upcoming events, workshops, and tech fests.
         </p>
 
         {/* Register button */}
@@ -141,16 +94,16 @@ const RegisterSection = () => {
             <span className="absolute inset-0 border-2 border-crimson rounded-none opacity-0 group-hover:opacity-100 group-hover:scale-[2] transition-all duration-1000 delay-100" />
             
             {/* Button text */}
-            <span className="relative z-10">REGISTER NOW</span>
+            <span className="relative z-10">JOIN COMMUNITY</span>
 
             {/* Gradient sweep on hover */}
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
           </button>
         </div>
 
-        {/* Spots remaining */}
+        {/* Community stats */}
         <p className="mt-8 font-horror text-muted-foreground gsap-fade-up">
-          <span className="text-crimson font-bold">127</span> spots remaining
+          <span className="text-crimson font-bold">5000+</span> active members
         </p>
       </div>
 

@@ -21,11 +21,11 @@ const SponsorsSection = () => {
         {/* Section header */}
         <div className="text-center mb-20 px-4">
           <h2 className="font-stranger text-5xl sm:text-6xl md:text-8xl text-foreground mb-4 gsap-fade-up">
-            THE <span className="text-crimson text-glow-red">POWERS</span> BEHIND
-          </h2>
-          <p className="font-horror text-xl text-muted-foreground gsap-fade-up">
-            Our sponsors make the impossible possible
-          </p>
+          OUR <span className="text-crimson text-glow-red">PARTNERS</span>
+        </h2>
+        <p className="font-horror text-xl text-muted-foreground gsap-fade-up">
+          Leading organizations powering our campus events
+        </p>
         </div>
 
         {/* Infinite scroll marquee */}

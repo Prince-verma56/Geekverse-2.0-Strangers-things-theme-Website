@@ -1,68 +1,32 @@
-import { useEffect, useRef } from 'react';
-
 const FilmGrain = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationId: number;
-
-    const resize = () => {
-      canvas.width = Math.floor(window.innerWidth / 2);
-      canvas.height = Math.floor(window.innerHeight / 2);
-    };
-
-    const generateNoise = () => {
-      const imageData = ctx.createImageData(canvas.width, canvas.height);
-      const data = imageData.data;
-
-      for (let i = 0; i < data.length; i += 4) {
-        const noise = Math.random() * 50;
-        data[i] = noise;     // R
-        data[i + 1] = noise; // G
-        data[i + 2] = noise; // B
-        data[i + 3] = 15;    // A (low opacity)
-      }
-
-      ctx.putImageData(imageData, 0, 0);
-    };
-
-    let lastTime = 0;
-    const fps = 20;
-    const fpsInterval = 1000 / fps;
-
-    const animate = (timestamp: number) => {
-      animationId = requestAnimationFrame(animate);
-
-      const elapsed = timestamp - lastTime;
-      if (elapsed > fpsInterval) {
-        lastTime = timestamp - (elapsed % fpsInterval);
-        generateNoise();
-      }
-    };
-
-    resize();
-    animate(0);
-
-    window.addEventListener('resize', resize);
-
-    return () => {
-      window.removeEventListener('resize', resize);
-      cancelAnimationFrame(animationId);
-    };
-  }, []);
-
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-[9998]"
-      style={{ mixBlendMode: 'overlay', opacity: 0.3, width: '100%', height: '100%' }}
-    />
+    <div className="fixed inset-0 pointer-events-none z-[9998] overflow-hidden">
+      <div 
+        className="w-[300%] h-[300%] absolute top-[-100%] left-[-100%] animate-grain"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.5'/%3E%3C/svg%3E")`,
+          mixBlendMode: 'overlay',
+          opacity: 0.3
+        }}
+      />
+      <style>{`
+        @keyframes grain {
+          0%, 100% { transform: translate(0, 0); }
+          10% { transform: translate(-5%, -10%); }
+          20% { transform: translate(-15%, 5%); }
+          30% { transform: translate(7%, -25%); }
+          40% { transform: translate(-5%, 25%); }
+          50% { transform: translate(-15%, 10%); }
+          60% { transform: translate(15%, 0%); }
+          70% { transform: translate(0%, 15%); }
+          80% { transform: translate(3%, 35%); }
+          90% { transform: translate(-10%, 10%); }
+        }
+        .animate-grain {
+          animation: grain 0.5s steps(10) infinite;
+        }
+      `}</style>
+    </div>
   );
 };
 

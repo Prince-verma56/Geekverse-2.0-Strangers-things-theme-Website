@@ -1,3 +1,4 @@
+
 import React from "react";
 import { motion, Variants } from "framer-motion";
 import InteractiveTilt3D from "../InteractiveTilt3D";
@@ -42,7 +43,7 @@ const AboutSection = () => {
   return (
     <section
       id="about"
-      className="relative min-h-screen py-32 px-4 overflow-hidden bg-background"
+      className="relative min-h-[80vh] py-32 px-4 overflow-hidden bg-background"
       style={{ perspective: '1200px' }}
     >
       {/* Optimized Background Layers */}
@@ -108,7 +109,7 @@ const AboutSection = () => {
                 `
               }}
             >
-              GEEKVERSE 2.0
+              OUR MISSION
             </span>
           </h2>
           <motion.div
@@ -126,10 +127,8 @@ const AboutSection = () => {
           className="font-horror text-xl sm:text-2xl md:text-3xl text-muted-foreground leading-relaxed text-center"
           style={{ willChange: 'transform' }}
         >
-          A battle of innovation, code, and creativity. Experience a 30-hour
-          hackathon hosted by the
-          <span className="text-crimson font-semibold"> GeeksforGeeks Campus Body</span>.
-          Bring your ideas to life, compete with great minds, and shape the future.
+          Empowering the next generation of innovators. We organize premier events, hackathons, and workshops to help you
+          <span className="text-crimson font-semibold"> Build, Connect, and Grow</span>.
         </motion.p>
 
         {/* Top Cards Grid */}
@@ -139,19 +138,16 @@ const AboutSection = () => {
             style={{ willChange: 'transform' }}
           >
             <InteractiveTilt3D>
-              <div className="p-8 bg-card/20 backdrop-blur-md border border-red-400 border-border/30 rounded-xl transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-xl hover:shadow-crimson/10 relative overflow-hidden">
+              <div className="p-8 bg-card/20 backdrop-blur-md border border-red-400 border-border/30 rounded-xl transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-xl hover:shadow-crimson/10 relative overflow-hidden h-full">
                 {/* Shiny effect */}
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
                 <h3 className="font-empire text-2xl text-crimson mb-4 tracking-wider relative z-10">
-                  ABOUT THE EVENT
+                  WHAT WE DO
                 </h3>
                 <p className="font-horror text-muted-foreground leading-relaxed relative z-10">
-                  GeekVerse 2.0 is a 30-hour offline hackathon designed to push
-                  real-world innovation.
-                  <br />
-                  Expected participation:
-                  <span className="text-foreground font-semibold"> 350–400 students</span>.
+                  From intense competitions to tech summits and cultural fests, we bring the campus alive with energy and innovation.
+                  We provide the platform; you provide the talent.
                 </p>
               </div>
             </InteractiveTilt3D>
@@ -162,19 +158,18 @@ const AboutSection = () => {
             style={{ willChange: 'transform' }}
           >
             <InteractiveTilt3D>
-              <div className=" border-red-400 p-8 bg-card/20 backdrop-blur-md border border-border/30 rounded-xl transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-xl hover:shadow-crimson/10 relative overflow-hidden">
+              <div className=" border-red-400 p-8 bg-card/20 backdrop-blur-md border border-border/30 rounded-xl transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-xl hover:shadow-crimson/10 relative overflow-hidden h-full">
                 {/* Shiny effect */}
                 <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
                 <h3 className="font-empire text-2xl text-crimson mb-4 tracking-wider relative z-10">
-                  WHEN & WHERE
+                  WHY JOIN US?
                 </h3>
                 <p className="font-horror text-muted-foreground leading-relaxed relative z-10">
+                  Connect with industry mentors, win exciting rewards, and showcase your skills on a national stage.
                   <span className="text-foreground font-semibold">
-                    Tentative Date: 10 Jan 2026 – 15 Jan 2026
+                    &nbsp;Experience the thrill of competition.
                   </span>
-                  <br /> Mode: Offline
-                  <br /> Venue: Yet to be decided
                 </p>
               </div>
             </InteractiveTilt3D>
@@ -190,9 +185,9 @@ const AboutSection = () => {
           viewport={{ once: true, margin: "-50px", amount: 0.3 }}
         >
           {[
-            { title: "TEAM SIZE", desc: "2–4 Members per team" },
-            { title: "TICKET PRICE", desc: "₹200 – ₹250 per participant" },
-            { title: "DURATION", desc: "30 Hours nonstop coding" },
+            { title: "COMMUNITY", desc: "5000+ Students Strong" },
+            { title: "EVENTS", desc: "10+ Annual Flagship Events" },
+            { title: "OPPORTUNITIES", desc: "Internships & Networking" },
           ].map((item, i) => (
             <motion.div
               key={i}
@@ -200,49 +195,15 @@ const AboutSection = () => {
               style={{ willChange: 'transform' }}
             >
               <InteractiveTilt3D>
-                <div className="border-red-400 p-5 bg-card/20 backdrop-blur-md border border-border/30 rounded-lg transition-all duration-500 hover:border-crimson/50 hover:bg-card/40 hover:shadow-lg relative overflow-hidden group">
-                  {/* Shiny effect */}
-                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-                  <p className="font-empire text-xl text-crimson mb-1 tracking-wide relative z-10">
-                    {item.title}
-                  </p>
-                  <p className="text-muted-foreground font-horror relative z-10">
-                    {item.desc}
-                  </p>
+                <div className="p-6 bg-card/10 border border-white/5 rounded-lg hover:bg-card/20 transition-colors">
+                    <h4 className="font-empire text-lg text-crimson mb-2">{item.title}</h4>
+                    <p className="text-muted-foreground">{item.desc}</p>
                 </div>
               </InteractiveTilt3D>
             </motion.div>
           ))}
         </motion.div>
-
-        {/* Footer Quote */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, ease: SLOW_EASE }}
-          viewport={{ once: true, amount: 0.5 }}
-        >
-          <p className="font-horror text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            "Great things are born when ideas collide with courage. Code it,
-            build it, own it."
-          </p>
-          <span className="block mt-4 font-dragonforce text-crimson tracking-widest text-lg">
-            — GEEKVERSE
-          </span>
-        </motion.div>
       </motion.div>
-
-      {/* Custom Styles */}
-      <style>{`
-        .font-empire {
-          font-family: 'empire', sans-serif;
-        }
-        .font-dragonforce {
-          font-family: 'Dragonforce', sans-serif;
-        }
-      `}</style>
     </section>
   );
 };

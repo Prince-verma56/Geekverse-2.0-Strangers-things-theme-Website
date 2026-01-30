@@ -23,7 +23,7 @@ const reasons = [
     icon: User,
     title: "FIND YOUR PARTY",
     description:
-      "Connect with developers who share your passion. Form alliances that last beyond the hackathon.",
+      "Connect with developers who share your passion. Form alliances that last beyond the event.",
   },
   {
     icon: Trophys,

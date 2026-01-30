@@ -1,50 +1,9 @@
-import { useEffect, useRef } from 'react';
-
 const FogOverlay = () => {
-  const fog1Ref = useRef<HTMLDivElement>(null);
-  const fog2Ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const fog1 = fog1Ref.current;
-    const fog2 = fog2Ref.current;
-    if (!fog1 || !fog2) return;
-
-    let position1 = 0;
-    let position2 = -50;
-    let lastTime = 0;
-    const fps = 60;
-    const interval = 1000 / fps;
-
-    const animate = (time?: number) => {
-      if (typeof time !== 'number') {
-        requestAnimationFrame(animate);
-        return;
-      }
-      const elapsed = time - lastTime;
-      if (elapsed >= interval) {
-        lastTime = time;
-        position1 += 0.02;
-        position2 += 0.015;
-
-        if (position1 > 100) position1 = -100;
-        if (position2 > 100) position2 = -100;
-
-        fog1.style.transform = `translate3d(${position1}%,0,0)`;
-        fog2.style.transform = `translate3d(${position2}%,0,0)`;
-      }
-
-      requestAnimationFrame(animate);
-    };
-
-    animate(0);
-  }, []);
-
   return (
     <div className="fixed inset-0 pointer-events-none z-20 overflow-hidden">
       {/* Fog layer 1 */}
       <div
-        ref={fog1Ref}
-        className="absolute inset-0 w-[200%]"
+        className="absolute inset-0 w-[200%] animate-fog-1"
         style={{
           background: `
             radial-gradient(ellipse 80% 50% at 20% 50%, 
@@ -62,8 +21,7 @@ const FogOverlay = () => {
 
       {/* Fog layer 2 */}
       <div
-        ref={fog2Ref}
-        className="absolute inset-0 w-[200%]"
+        className="absolute inset-0 w-[200%] animate-fog-2"
         style={{
           background: `
             radial-gradient(ellipse 70% 60% at 40% 40%, 
@@ -94,6 +52,19 @@ const FogOverlay = () => {
           background: 'radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0, 0, 0, 0.4) 100%)',
         }}
       />
+
+      <style>{`
+        @keyframes fogMove {
+          0% { transform: translate3d(-50%, 0, 0); }
+          100% { transform: translate3d(0, 0, 0); }
+        }
+        .animate-fog-1 {
+          animation: fogMove 60s linear infinite;
+        }
+        .animate-fog-2 {
+          animation: fogMove 80s linear infinite reverse;
+        }
+      `}</style>
     </div>
   );
 };

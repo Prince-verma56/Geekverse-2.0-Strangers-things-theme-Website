@@ -8,10 +8,10 @@ const navItems = [
   { label: "About", sectionId: "about" },
   { label: "Tracks", sectionId: "tracks" },
   { label: "Why Join", sectionId: "why-join" },
-  { label: "Prizes", sectionId: "prizes" },
-  { label: "Judges", sectionId: "judges" },
-  { label: "Sponsors", sectionId: "sponsors" },
-  { label: "Register", sectionId: "register" },
+  { label: "Rewards", sectionId: "rewards" },
+  { label: "Mentors", sectionId: "judges" },
+  { label: "Partners", sectionId: "sponsors" },
+  { label: "Join", sectionId: "register" },
 ];
 
 const CircularNav: React.FC = () => {

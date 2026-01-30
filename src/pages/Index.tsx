@@ -12,10 +12,11 @@ const LightningFlash = lazy(() => import('@/components/effects/LightningFlash'))
 
 // Lazy load sections (some contain heavy animations/3D)
 const HeroSection = lazy(() => import('@/components/sections/HeroSection'));
+const FeaturedEventsSection = lazy(() => import('@/components/sections/FeaturedEventsSection'));
 const AboutSection = lazy(() => import('@/components/sections/AboutSection'));
 const WhyJoinSection = lazy(() => import('@/components/sections/WhyJoinSection'));
 const TracksSection = lazy(() => import('@/components/sections/TracksSection'));
-const PrizesSection = lazy(() => import('@/components/sections/PrizesSection'));
+const RewardsSection = lazy(() => import('@/components/sections/RewardsSection'));
 const JudgesSection = lazy(() => import('@/components/sections/JudgesSection'));
 const SponsorsSection = lazy(() => import('@/components/sections/SponsorsSection'));
 const RegisterSection = lazy(() => import('@/components/sections/RegisterSection'));
@@ -46,7 +47,7 @@ const IndexContent = () => {
         <CustomCursor />
         <ParticleField />
         <FogOverlay />
-        <FilmGrain />
+        {/* <FilmGrain /> */}
         <LightningFlash />
       </Suspense>
 
@@ -73,7 +74,7 @@ const IndexContent = () => {
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>
-          <PrizesSection />
+          <RewardsSection />
         </Suspense>
 
         <Suspense fallback={<SectionFallback />}>

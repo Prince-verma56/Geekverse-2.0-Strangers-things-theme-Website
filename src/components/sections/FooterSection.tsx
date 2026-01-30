@@ -30,7 +30,7 @@ const FooterSection = () => {
             UPSIDE DOWN
           </h3>
           <p className="font-horror text-sm text-muted-foreground mt-2">
-            HACKATHON 2025
+            CAMPUS EVENTS
           </p>
         </div>
 
@@ -67,7 +67,7 @@ const FooterSection = () => {
         {/* Copyright */}
         <div className="text-center">
           <p className="font-sans text-xs text-muted-foreground/50">
-            © 2025 Upside Down Hackathon. All rights reserved.
+            © 2025 Campus Events. All rights reserved.
           </p>
           <p className="font-horror text-xs text-muted-foreground/30 mt-2">
             Built with darkness and code.
